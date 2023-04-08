@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  devise_for :users
   get 'home/index'
-  devise_for :users, skip: [:passwords, :registrations]
+  devise_for :users, skip: %i[passwords registrations]
 
   resources :todos
 
