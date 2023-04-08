@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TodosController < ApplicationController
+  before_action :require_user!
+
   before_action :set_todo, only: %i[show edit update destroy]
 
   # GET /todos or /todos.json

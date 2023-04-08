@@ -1,7 +1,13 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Todos</h1>
+<% if current_user.present? %>
+  <%= current_user.email %>
+  <%= button_to "Log Out", auth.sign_out_path, method: :delete %>
+  <% else %>
+  <%= link_to "Log In", auth.sign_in_path %>
+<% end %>
 
+<h1>Todos</h1>
 <div id="todos">
   <% @todos.each do |todo| %>
     <%= render todo %>
