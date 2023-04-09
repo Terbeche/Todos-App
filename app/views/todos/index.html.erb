@@ -1,20 +1,39 @@
 <p style="color: green"><%= notice %></p>
-
 <% if current_user.present? %>
-  <%= current_user.email %>
-  <%= button_to "Log Out", auth.sign_out_path, method: :delete %>
-  <% else %>
-  <%= link_to "Log In", auth.sign_in_path %>
+<%= current_user.email %>
+<%= button_to "Log Out", auth.sign_out_path, method: :delete %>
+<% else %>
+<%= link_to "Log In", auth.sign_in_path %>
 <% end %>
+<p style="color: red"><%= flash[:error] %></p>
+<h1 class="mb-4">Todos</h1>
+<%= form_with(model: @todo, data: { turbo: false }, remote: true) do |f| %>
 
-<h1>Todos</h1>
-<div id="todos">
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+    <%= f.label :"due date" %>
+  <%= f.date_field :due_date %>
+  <%= f.submit "Create" %>
+<% end %>
+<% if @errors %>
+  <ul>
+    <% @errors.each do |error| %>
+      <li><%= error %></li>
+    <% end %>
+  </ul>
+<% end %>
+<ul id="todos">
   <% @todos.each do |todo| %>
-    <%= render todo %>
-    <p>
-      <%= link_to "Show this todo", todo %>
-    </p>
-  <% end %>
-</div>
+    <li id="<%= dom_id(todo) %>">
+      <%= todo.id %>
+            <%= todo.title %>
+      <%= todo.description %>
+      <%= todo.due_date %>
 
-<%= link_to "New todo", new_todo_path %>
+      <%= link_to "Edit", edit_todo_path(todo), remote: true %>
+      <%= link_to "Delete", todo, method: :delete, remote: true %>
+    </li>
+  <% end %>
+</ul>

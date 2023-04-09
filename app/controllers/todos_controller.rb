@@ -1,73 +1,40 @@
-# frozen_string_literal: true
-
 class TodosController < ApplicationController
-  before_action :require_user!
 
-  before_action :set_todo, only: %i[show edit update destroy]
-
-  # GET /todos or /todos.json
   def index
-    @todos = Todo.all
-  end
-
-  # GET /todos/1 or /todos/1.json
-  def show; end
-
-  # GET /todos/new
-  def new
+    @todos = current_user.todos
     @todo = Todo.new
+
   end
-
-  # GET /todos/1/edit
-  def edit; end
-
-  # POST /todos or /todos.json
+ 
   def create
     @todo = Todo.new(todo_params)
-
+    @todo.user = current_user
     respond_to do |format|
       if @todo.save
-        format.html { redirect_to todo_url(@todo), notice: 'Todo was successfully created.' }
-        format.json { render :show, status: :created, location: @todo }
+        format.html { redirect_to todos_path }
+        format.js
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @todo.errors, status: :unprocessable_entity }
+        @errors = @todo.errors.full_messages
+        flash[:error] = @todo.errors.full_messages.to_sentence
+        format.html { redirect_to todos_path }
+        format.js
       end
     end
   end
 
-  # PATCH/PUT /todos/1 or /todos/1.json
-  def update
-    respond_to do |format|
-      if @todo.update(todo_params)
-        format.html { redirect_to todo_url(@todo), notice: 'Todo was successfully updated.' }
-        format.json { render :show, status: :ok, location: @todo }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @todo.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /todos/1 or /todos/1.json
   def destroy
+    @todo = Todo.find(params[:id])
     @todo.destroy
 
     respond_to do |format|
-      format.html { redirect_to todos_url, notice: 'Todo was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to todos_path }
+      format.js
     end
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_todo
-    @todo = Todo.find(params[:id])
-  end
-
-  # Only allow a list of trusted parameters through.
   def todo_params
-    params.require(:todo).permit(:title, :description, :due_date, :user_id)
+    params.require(:todo).permit(:title, :description, :due_date)
   end
 end

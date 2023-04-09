@@ -1,22 +1,22 @@
-<div id="<%= dom_id todo %>">
-  <p>
-    <strong>Title:</strong>
-    <%= todo.title %>
-  </p>
+<div class="card mb-3 todo" data-id="<%= todo.id %>">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-1 d-flex align-items-center">
+        <i class="fas fa-bars text-muted"></i>
+      </div>
 
-  <p>
-    <strong>Description:</strong>
-    <%= todo.description %>
-  </p>
-
-  <p>
-    <strong>Due date:</strong>
-    <%= todo.due_date %>
-  </p>
-
-  <p>
-    <strong>User:</strong>
-    <%= todo.user_id %>
-  </p>
-
+      <div class="col-md-9">
+        <h5 class="card-title"><%= todo.title %></h5>
+        <% if todo.description.present? %>
+          <p class="card-text"><%= todo.description %></p>
+          <% end %>
+          <% if todo.due_date.present? %>
+  <small class="text-muted"><%= todo.due_date.strftime('%b %d, %Y') %></small>
+<% end %>
+  </div>
+  <div class="col-md-2 text-right">
+    <%= link_to 'Edit', edit_todo_path(todo.id), data: { remote: true }, class: 'btn btn-sm btn-secondary' %>
+    <%= link_to "Delete", todo_path(todo.id), { method: "delete", remote: true, data: { confirm: "Are you sure?" } } %>
+  </div>
+</div>
 </div>
