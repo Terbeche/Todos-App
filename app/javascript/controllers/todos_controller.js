@@ -8,17 +8,29 @@ export default class extends Controller {
     event.preventDefault();
     let url = this.formTarget.action;
     let data = new FormData(this.formTarget);
-
+  
     fetch(url, {
       method: "POST",
       body: data,
       headers: {
         "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
       }
-    }).then(response => response.text())
+    }).then(response => {
+      if (!response.ok) {
+        throw response;
+      }
+      return response.text();
+    })
       .then(html => {
         this.todosTarget.insertAdjacentHTML("beforeend", html);
         this.formTarget.reset();
+      })
+      .catch(error => {
+        error.json().then(json => {
+          console.error('There was a problem with the fetch operation:', json.errors);
+          let errorMessageElement = document.querySelector("#error-message");
+          errorMessageElement.textContent = json.errors.join(", ");
+        });
       });
   }
 
@@ -40,26 +52,6 @@ export default class extends Controller {
         todoElement.insertAdjacentElement("afterend", editFormWrapper);
       });
   }
-
-  // update(event) {
-  //   console.log("update");
-
-  //   event.preventDefault();
-  //   let formElement = event.target;
-  //   let url = formElement.action;
-  //   let data = new FormData(formElement);
-  //   fetch(url, {
-  //     method: "PATCH",
-  //     body: data,
-  //     headers: {
-  //       "X-CSRF-Token": docuformment.querySelector("meta[name='csrf-token']").content,
-  //       "Accept": "text/javascript"
-  //     }
-  //   }).then(response => response.text())
-  //     .then(html => {
-  //       formElement.closest(".todo").outerHTML = html;
-  //     });
-  // }
 
   update(event) {
     console.log("update");
@@ -103,5 +95,26 @@ export default class extends Controller {
         todoElement.remove();
       });
     
+  }
+
+  toggleCompleted(event) {
+    let todoId = event.target.value;
+    let completed = event.target.checked;
+    let url = `/todos/${todoId}/toggle_completed`;
+  
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify({ completed: completed }),
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+      }
+    });
+    let todoElement = document.getElementById(todoId);
+    if (completed) {
+      todoElement.classList.add("completed");
+    } else {
+      todoElement.classList.remove("completed");
+    }
   }
 }

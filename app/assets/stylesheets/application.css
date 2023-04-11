@@ -13,3 +13,6 @@
  *= require_tree .
  *= require_self
  */
+ .todo.completed {
+    text-decoration: line-through;
+  }

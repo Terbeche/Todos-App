@@ -10,25 +10,20 @@ class TodosController < ApplicationController
    # GET /todos/1 or /todos/1.json
    def show
    end
- 
-   # GET /todos/new
-   def new
-     @todo = Todo.new
-   end
+
  
   def create
     @todo = Todo.new(todo_params)
     @todo.user = current_user
+
     respond_to do |format|
+
       if @todo.save
         format.html { redirect_to todo_url(@todo), notice: "Todo was successfully created." }
         format.json { render :show, status: :created, location: @todo }
       else
-        @errors = @todo.errors.full_messages
-        flash[:error] = @todo.errors.full_messages.to_sentence
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @todo.errors, status: :unprocessable_entity }
-     end
+        format.json { render json: { errors: @todo.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -57,6 +52,13 @@ class TodosController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def toggle_completed
+    @todo = Todo.find(params[:id])
+    @todo.update(completed: params[:completed])
+    head :no_content
+  end
+  
   private
   def set_todo
     @todo = Todo.find(params[:id])

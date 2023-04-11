@@ -1,5 +1,6 @@
 <div class="todo" id="<%= todo.id %>">
   <p>
+    <%= check_box_tag "todo_completed_#{todo.id}", todo.id, todo.completed, data: { action: "click->todos#toggleCompleted" } %>
     <strong>Title:</strong>
     <span class="title"><%= todo.title %></span>
   </p>
