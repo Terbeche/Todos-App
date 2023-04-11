@@ -1,5 +1,8 @@
 <p style="color: green"><%= notice %></p>
-
+  <% if current_user %>
+    <p>Welcome, <%= current_user.email %>!</p>
+    <%= link_to "Logout", auth.sign_out_path %>
+  <% end %>
 <div data-controller="todos">
   <h1>Todos</h1>
 
