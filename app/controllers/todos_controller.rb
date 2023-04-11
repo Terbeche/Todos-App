@@ -3,7 +3,7 @@ class TodosController < ApplicationController
   before_action :set_todo, only: %i[ show edit update destroy ]
 
   def index
-    @todos = current_user.todos
+    @todos = current_user.todos.order(:position)
     @todo = Todo.new
 
   end
@@ -11,13 +11,13 @@ class TodosController < ApplicationController
    def show
    end
 
- 
   def create
     @todo = Todo.new(todo_params)
     @todo.user = current_user
+    @todos = current_user.todos
+    @todo.position = @todos.maximum(:position).to_i + 1
 
     respond_to do |format|
-
       if @todo.save
         format.html { redirect_to todo_url(@todo), notice: "Todo was successfully created." }
         format.json { render :show, status: :created, location: @todo }
@@ -46,7 +46,6 @@ class TodosController < ApplicationController
 
   def destroy
     @todo.destroy
-
     respond_to do |format|
       format.html { redirect_to todos_url, notice: "Todo was successfully destroyed." }
       format.json { head :no_content }
@@ -58,7 +57,16 @@ class TodosController < ApplicationController
     @todo.update(completed: params[:completed])
     head :no_content
   end
-  
+
+  def update_positions
+    puts "positions: #{params[:positions].inspect}"
+
+    params[:positions].each_with_index do |id, index|
+      Todo.find(id).update(position: index + 1)
+    end
+    head :no_content
+  end
+
   private
   def set_todo
     @todo = Todo.find(params[:id])
