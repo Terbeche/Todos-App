@@ -2,9 +2,55 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   static targets = ["form", "todos", "editForm"]
+connect() {
+  this.element.addEventListener("dragstart", this.dragstart.bind(this));
+  this.element.addEventListener("dragover", this.dragover.bind(this));
+  this.element.addEventListener("drop", this.drop.bind(this));
+}
+
+disconnect() {
+  this.element.removeEventListener("dragstart", this.dragstart.bind(this));
+  this.element.removeEventListener("dragover", this.dragover.bind(this));
+  this.element.removeEventListener("drop", this.drop.bind(this));
+}
+  
+  dragstart(event) {
+    event.dataTransfer.setData("text/plain", event.target.id);
+  }
+  
+  dragover(event) {
+    event.preventDefault();
+  }
+
+  drop(event) {
+    event.preventDefault();
+    let draggedId = event.dataTransfer.getData("text/plain");
+    let draggedElement = document.getElementById(draggedId);
+    let targetElement = event.target.closest(".todo");
+    if (targetElement && targetElement !== draggedElement) {
+      let todoElements = Array.from(this.element.querySelectorAll(".todo"));
+      let draggedIndex = todoElements.indexOf(draggedElement);
+      let targetIndex = todoElements.indexOf(targetElement);
+      if (draggedIndex < targetIndex) {
+        targetElement.parentNode.insertBefore(draggedElement, targetElement.nextSibling);
+      } else {
+        targetElement.parentNode.insertBefore(draggedElement, targetElement);
+      }
+      todoElements = Array.from(this.element.querySelectorAll(".todo"));
+      let positions = todoElements.map((element) => element.id).filter((id) => id !== "");
+      let url = "/todos/update_positions";
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify({ positions: positions }),
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
+        }
+      });
+    }
+  }
 
   create(event) {
-    console.log("create");
     event.preventDefault();
     let url = this.formTarget.action;
     let data = new FormData(this.formTarget);
@@ -34,9 +80,7 @@ export default class extends Controller {
       });
   }
 
-  edit(event) {
-    console.log("edit");
-  
+  edit(event) {  
     event.preventDefault();
     let url = event.target.href;
   
@@ -45,16 +89,13 @@ export default class extends Controller {
       .then(html => {
         let todoElement = event.target.closest(".todo");
         todoElement.style.display = "none";
-        // Create a new element to hold the edit form
         let editFormWrapper = document.createElement("div");
         editFormWrapper.innerHTML = html;
-        // Insert the edit form into the DOM after the todo element
         todoElement.insertAdjacentElement("afterend", editFormWrapper);
       });
   }
 
   update(event) {
-    console.log("update");
     let editForm = this.editFormTarget;
     event.preventDefault();
     let url = editForm.action;
@@ -69,9 +110,7 @@ export default class extends Controller {
     })
     .then(response => response.json())
     .then(data => {
-      // Use the data from the response to update the HTML of the todo element
       let todoElement = document.getElementById(data.id);
-      console.log(todoElement);
       todoElement.querySelector(".title").textContent = data.title;
       todoElement.querySelector(".description").textContent = data.description;
       todoElement.querySelector(".due_date").textContent = data.due_date;
@@ -81,7 +120,6 @@ export default class extends Controller {
   }
   
   delete(event) {
-    console.log("delete");
     event.preventDefault();
       let url = event.target.href;
 
@@ -101,7 +139,7 @@ export default class extends Controller {
     let todoId = event.target.value;
     let completed = event.target.checked;
     let url = `/todos/${todoId}/toggle_completed`;
-  
+
     fetch(url, {
       method: "POST",
       body: JSON.stringify({ completed: completed }),
@@ -110,11 +148,14 @@ export default class extends Controller {
         "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").content
       }
     });
+
     let todoElement = document.getElementById(todoId);
     if (completed) {
+      console.log("toggleCompleted")
       todoElement.classList.add("completed");
     } else {
       todoElement.classList.remove("completed");
     }
   }
+  
 }
