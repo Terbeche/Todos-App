@@ -66,6 +66,9 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
+    addressable (2.8.4)
+      public_suffix (>= 2.0.2, < 6.0)
+    bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -90,6 +93,10 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    launchy (2.5.2)
+      addressable (~> 2.8)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     loofah (2.20.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -115,7 +122,11 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.14.2-x86_64-linux)
       racc (~> 1.4)
+    passwordless (0.11.0)
+      bcrypt (~> 3.1.11)
+      rails (>= 5.1.4)
     pg (1.4.6)
+    public_suffix (5.0.1)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.2)
@@ -186,6 +197,8 @@ DEPENDENCIES
   debug
   importmap-rails
   jbuilder
+  letter_opener
+  passwordless
   pg (~> 1.1)
   puma (~> 5.0)
   rails (~> 7.0.4, >= 7.0.4.3)

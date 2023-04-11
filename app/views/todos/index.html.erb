@@ -1,0 +1,13 @@
+<p style="color: green"><%= notice %></p>
+
+<div data-controller="todos">
+  <h1>Todos</h1>
+
+  <div data-target="todos.todos" class="todo">
+    <%= render @todos %>
+  </div>
+
+  <h2>New Todo</h2>
+<%= render "form", todo: :@todo %>
+
+</div>
