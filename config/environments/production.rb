@@ -13,7 +13,7 @@ Rails.application.configure do
     address: 'smtp-relay.sendinblue.com',
     port: 587,
     user_name: 'termus96@gmail.com',
-    password: 'xsmtpsib-30233f2719b5f8e46305af36af7bde4996f51b8b61adfaef2551584f3e5ccb91-vHxVGwkNP0UgEBI2',
+    password: ENV['PASSWORD'],
     authentication: 'login',
     enable_starttls_auto: true
   }
