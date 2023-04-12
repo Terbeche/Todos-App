@@ -1,5 +1,5 @@
-<div class="todo" id="<%= todo.id %>" draggable="true">
- <div class= "<%= "completed" if todo.completed %>">
+<div class="todo <%= "completed" if todo.completed %>" id="<%= todo.id %>" draggable="true">
+ <div>
   <p>
     <%= check_box_tag "todo_completed_#{todo.id}", todo.id, todo.completed, data: { action: "click->todos#toggleCompleted" } %>
     <strong>Title:</strong>
