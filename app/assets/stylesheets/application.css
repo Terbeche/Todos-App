@@ -13,6 +13,123 @@
  *= require_tree .
  *= require_self
  */
+ body {
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+.welcome-message {
+  color: black;
+  text-align: center;
+}
+
+.logout-div {
+	    display: flex;
+			justify-content: center;
+			align-items: center;
+}
+
+
+.logout-link {
+   color: #fff;
+  background-color: orange;
+  padding: 0.5rem;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+
+}
+
+h1, h2 {
+  color: #333;
+  text-align: center;
+}
+
+[data-controller="todos"] {
+  margin: 1rem 3rem;
+}
+
+#todos-list {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 5rem;
+}
+.todo {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.todo:hover {
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+.todo-buttons{
+  border-bottom: none;
+}
+
 .completed {
-    text-decoration: line-through;
-  }
+  text-decoration: line-through;
+}
+.edit-link {
+  color: #fff;
+  background-color: green;
+  padding: 0.5rem;
+text-decoration: none;
+}
+
+.delete-link {
+  color: #fff;
+  background-color: red;
+  padding: 0.5rem;
+  text-decoration: none;
+
+}
+
+#error-messages {
+  color: red;
+}
+
+.form {
+  max-width: 600px;
+  margin: 0 auto;
+  margin-bottom: 5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin: 1rem 0rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 6px 12px;
+  box-sizing: border-box;
+}
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: orange;
+}
+
+

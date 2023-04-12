@@ -1,13 +1,18 @@
-  <% if current_user %>
-    <p>Welcome, <%= current_user.email %>!</p>
-    <%= link_to "Logout", auth.sign_out_path %>
-  <% end %>
+<% if current_user %>
+  <p class="welcome-message">Welcome, <%= current_user.email %>!</p>
+  <div class="logout-div">
+  <%= link_to "Logout", auth.sign_out_path, class: "logout-link" %>
+</div>
+<% end %>
 <div data-controller="todos">
   <h1>Todos</h1>
 
-  <div data-target="todos.todos">
+  <div data-target="todos.todos" id="todos-list">
     <%= render @todos %>
   </div>
 
-  <h2>New Todo</h2>
-<%= render "form", todo: :@todo %>
+  <h2>Create New Todo</h2>
+  <div  class="form">
+  <%= render "form", todo: :@todo %>
+</div>
+</div>

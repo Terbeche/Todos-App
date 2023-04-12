@@ -1,8 +1,8 @@
-  <%= form_with(model: @todo, data: { target: "todos.form", action: "submit->todos#create" }) do |form| %>
-<div id="error-message"></div>
+<%= form_with(model: @todo,  data: { target: "todos.form", action: "submit->todos#create" }) do |form| %>
+  <div id="error-message"></div>
 
-<% if @todo.errors.any? %>
-    <div style="color: red">
+  <% if @todo.errors.any? %>
+    <div id="error-messages">
       <h2><%= pluralize(@todo.errors.count, "error") %> prohibited this todo from being saved:</h2>
 
       <ul>
@@ -13,20 +13,22 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="form-group">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+  <div class="form-group">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :due_date, style: "display: block" %>
-    <%= form.date_field :due_date %>
+  <div class="form-group">
+    <%= form.label :due_date, class: "form-label" %>
+    <%= form.date_field :due_date, class: "form-control" %>
   </div>
-  <div>
-    <%= form.submit %>
-  </div>  <% end %>
+
+  <div class="form-group">
+    <%= form.submit class: "btn btn-primary" %>
+  </div>
+<% end %>
