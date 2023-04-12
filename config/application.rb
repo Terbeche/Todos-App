@@ -24,6 +24,7 @@ module Todos
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
+    config.session_store :cookie_store, expire_after: 1.year
 
     # Configuration for the application, engines, and railties goes here.
     #
