@@ -10,12 +10,11 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: 'https://todos-j2ps.onrender.com' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: 'smtp.gmail.com',
+    address: 'smtp-relay.sendinblue.com',
     port: 587,
-    domain: 'https://todos-j2ps.onrender.com',
     user_name: 'termus96@gmail.com',
-    password: ENV['GMAIL_PASSWORD'],
-    authentication: 'plain',
+    password: 'xsmtpsib-30233f2719b5f8e46305af36af7bde4996f51b8b61adfaef2551584f3e5ccb91-vHxVGwkNP0UgEBI2',
+    authentication: 'login',
     enable_starttls_auto: true
   }
   # Eager load code on boot. This eager loads most of Rails and
