@@ -7,6 +7,7 @@ class CreateTodos < ActiveRecord::Migration[7.0]
       t.text :description
       t.date :due_date
       t.boolean :completed, default: false
+      t.integer :position
       t.references :user, null: false, foreign_key: true
 
       t.timestamps
