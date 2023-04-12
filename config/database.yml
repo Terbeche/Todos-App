@@ -84,3 +84,4 @@ production:
   database: Todos_production
   username: Todos
   password: <%= ENV["TODOS_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
